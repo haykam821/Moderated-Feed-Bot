@@ -1,0 +1,26 @@
+{
+	"name": "moderated-feed-bot",
+	"description": "A Discord bot that maintains a subreddit feed that can be moderated.",
+	"version": "1.0.0",
+	"main": "./src/index.js",
+	"scripts": {
+		"test": "echo \"Error: no test specified\" && exit 1"
+	},
+	"keywords": [
+		"discord",
+		"reddit",
+		"feed",
+		"moderation",
+		"bot"
+	],
+	"author": "haykam821",
+	"license": "MIT",
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/haykam821/Moderated-Feed-Bot.git"
+	},
+	"bugs": {
+		"url": "https://github.com/haykam821/Moderated-Feed-Bot/issues"
+	},
+	"homepage": "https://github.com/haykam821/Moderated-Feed-Bot#readme"
+}
