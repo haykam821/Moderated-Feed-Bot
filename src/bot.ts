@@ -14,7 +14,7 @@ import { log } from "./utils/debug";
 export class ModeratedFeedBot {
 	private readonly config: ModeratedFeedBotConfig;
 	private readonly targetsByChannel: Record<Snowflake, FeedTarget>;
-	private started: boolean = false;
+	private started = false;
 	private client: Client;
 	private snoowrap: Snoowrap;
 	private minimumPostTimestamp: number;
@@ -130,20 +130,20 @@ export class ModeratedFeedBot {
 			const image = submission.is_reddit_media_domain && submission.domain === "i.redd.it";
 
 			if (!image && submission.thumbnail !== "self") {
-				embed.setThumbnail(submission.thumbnail)
+				embed.setThumbnail(submission.thumbnail);
 			}
 
 			if (image) {
-				embed.setImage(submission.url)
+				embed.setImage(submission.url);
 			} else if (submission.is_self) {
 				embed.setDescription(submission.selftext.slice(0, 4096));
 			} else if (submission.url) {
 				const domain = discordEscape(submission.domain).slice(0, 90);
 				const url = discordEscape(submission.url).slice(0, 4000);
 
-				embed.setDescription("[`" + domain + "`](" + url + ")")
+				embed.setDescription("[`" + domain + "`](" + url + ")");
 			}
-			
+
 			if (submission.author) {
 				const iconUrl = (await submission.author.icon_img).split("?")[0];
 				const url = baseUrl + "/u/" + submission.author.name;
@@ -253,7 +253,7 @@ export class ModeratedFeedBot {
 
 		try {
 			if (interaction.commandName === inviteCommand) {
-				this.executeInviteCommand(interaction);
+				await this.executeInviteCommand(interaction);
 			}
 		} catch (error) {
 			log("interaction with command '%s' failed: %O", interaction.commandName, error);
@@ -272,10 +272,10 @@ export class ModeratedFeedBot {
 			.setURL(invite);
 
 		await interaction.reply({
-			content: "Invite the bot using the following link:",
 			components: [
 				new MessageActionRow().addComponents(button),
 			],
+			content: "Invite the bot using the following link:",
 			ephemeral: true,
 		});
 	}

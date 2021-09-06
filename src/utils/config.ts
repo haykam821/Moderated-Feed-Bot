@@ -5,11 +5,11 @@ import { cosmiconfig } from "cosmiconfig";
 import mergeDeep from "merge-deep";
 
 interface ModerationOptions {
-	roles: Snowflake[];
 	/**
 	 * A record mapping emojis to removal reasons.
 	 */
 	emoji: Record<string, string>;
+	roles: Snowflake[];
 }
 
 interface PollOptions {
@@ -34,17 +34,17 @@ export interface ModeratedFeedBotConfig {
 
 const baseConfig: ModeratedFeedBotConfig = {
 	moderation: {
-		roles: [],
 		emoji: {
-			"❌": "Removed from Discord by {USER_TAG} ({USER_ID})"
+			"❌": "Removed from Discord by {USER_TAG} ({USER_ID})",
 		},
+		roles: [],
 	},
 	poll: {},
 	registerCommands: false,
 	snoowrap: {},
 	targets: [],
 	token: undefined,
-}
+};
 
 /**
  * Gets the user-defined configuration with default values.
