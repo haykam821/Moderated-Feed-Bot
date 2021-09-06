@@ -34,6 +34,17 @@
 	"devDependencies": {
 		"@types/debug": "^4.1.7",
 		"@types/merge-deep": "^3.0.0",
+		"@typescript-eslint/eslint-plugin": "^4.31.0",
+		"@typescript-eslint/parser": "^4.31.0",
+		"eslint": "^7.32.0",
+		"eslint-config-haykam": "^1.10.0",
+		"eslint-plugin-extra-rules": "^0.0.0-development",
+		"eslint-plugin-html": "^6.1.2",
+		"eslint-plugin-jsdoc": "^32.3.4",
+		"eslint-plugin-json": "^2.1.2",
+		"eslint-plugin-markdown": "^2.2.0",
+		"eslint-plugin-node": "^11.1.0",
+		"eslint-plugin-unicorn": "^28.0.2",
 		"ts-node-dev": "^1.1.8",
 		"typescript": "^4.4.2"
 	},
@@ -44,5 +55,24 @@
 	"bugs": {
 		"url": "https://github.com/haykam821/Moderated-Feed-Bot/issues"
 	},
-	"homepage": "https://github.com/haykam821/Moderated-Feed-Bot#readme"
+	"homepage": "https://github.com/haykam821/Moderated-Feed-Bot#readme",
+	"eslintConfig": {
+		"extends": [
+			"eslint-config-haykam",
+			"plugin:@typescript-eslint/eslint-recommended",
+			"plugin:@typescript-eslint/recommended"
+		],
+		"parser": "@typescript-eslint/parser",
+		"plugins": [
+			"@typescript-eslint"
+		],
+		"rules": {
+			"semi": "off",
+			"@typescript-eslint/semi": "error",
+			"no-shadow": "off",
+			"@typescript-eslint/no-shadow": "error",
+			"sort-imports": "error",
+			"jsdoc/require-param-type": "off"
+		}
+	}
 }
