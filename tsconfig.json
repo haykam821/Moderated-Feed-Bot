@@ -1,0 +1,21 @@
+{
+	"compilerOptions": {
+		"downlevelIteration": true,
+		"esModuleInterop": true,
+		"lib": [
+			"es2020"
+		],
+		"module": "commonjs",
+		"moduleResolution": "node",
+		"noImplicitAny": true,
+		"outDir": "./dist",
+		"resolveJsonModule": true,
+		"rootDir": "./src",
+		"skipLibCheck": true,
+		"target": "es2015",
+		"types": [
+			"@types/debug",
+			"@types/merge-deep"
+		]
+	}
+}

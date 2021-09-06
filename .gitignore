@@ -74,3 +74,17 @@ typings/
 
 # FuseBox cache
 .fusebox/
+
+# TypeScript output
+dist/
+
+# Configuration
+config.json
+.moderatedfeedbotrc
+.moderatedfeedbotrc.json
+.moderatedfeedbotrc.yaml
+.moderatedfeedbotrc.yml
+.moderatedfeedbotrc.js
+.moderatedfeedbotrc.cjs
+moderatedfeedbot.config.js
+moderatedfeedbot.config.cjs
