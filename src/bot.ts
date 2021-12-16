@@ -145,7 +145,9 @@ export class ModeratedFeedBot {
 			}
 
 			if (submission.author) {
-				const iconUrl = (await submission.author.icon_img).split("?")[0];
+				const fullIconUrl = await submission.author.icon_img;
+				const iconUrl = fullIconUrl.split("?")[0];
+
 				const url = baseUrl + "/u/" + submission.author.name;
 
 				embed.setAuthor(submission.author.name, iconUrl, url);

@@ -10,4 +10,5 @@ async function start() {
 	const bot = new ModeratedFeedBot(config);
 	bot.start();
 }
+/* eslint-disable-next-line unicorn/prefer-top-level-await */
 start();
