@@ -1,25 +1,25 @@
-import { Intents, InviteScope, PartialTypes, Permissions } from "discord.js";
+import { IntentsBitField, OAuth2Scopes, Partials, PermissionsBitField } from "discord.js";
 
 export const intents = [
-	Intents.FLAGS.GUILDS,
-	Intents.FLAGS.GUILD_MESSAGES,
-	Intents.FLAGS.GUILD_MESSAGE_REACTIONS,
+	IntentsBitField.Flags.Guilds,
+	IntentsBitField.Flags.GuildMessages,
+	IntentsBitField.Flags.GuildMessageReactions,
 ];
 
-export const partials: PartialTypes[] = [
-	"MESSAGE",
-	"CHANNEL",
-	"REACTION",
+export const partials: Partials[] = [
+	Partials.Message,
+	Partials.Channel,
+	Partials.Reaction,
 ];
 
 export const permissions = [
-	Permissions.FLAGS.VIEW_CHANNEL,
-	Permissions.FLAGS.READ_MESSAGE_HISTORY,
-	Permissions.FLAGS.SEND_MESSAGES,
-	Permissions.FLAGS.MANAGE_MESSAGES,
+	PermissionsBitField.Flags.ViewChannel,
+	PermissionsBitField.Flags.ReadMessageHistory,
+	PermissionsBitField.Flags.SendMessages,
+	PermissionsBitField.Flags.ManageMessages,
 ];
 
-export const scopes: InviteScope[] = [
-	"bot",
-	"applications.commands",
+export const scopes: OAuth2Scopes[] = [
+	OAuth2Scopes.Bot,
+	OAuth2Scopes.ApplicationsCommands,
 ];

@@ -1,12 +1,10 @@
-import { Client, CommandInteraction, GuildMember, Interaction, MessageActionRow, MessageButton, MessageEmbed, MessageReaction, TextBasedChannels, User } from "discord.js";
+import { ActionRowBuilder, ButtonBuilder, ButtonStyle, ChannelType, Client, CommandInteraction, EmbedBuilder, GuildMember, Interaction, MessageActionRowComponentBuilder, MessageReaction, REST, Routes, Snowflake, TextBasedChannel, User } from "discord.js";
 import { FeedTarget, ModeratedFeedBotConfig } from "./utils/config";
-import { Routes, Snowflake } from "discord-api-types/v9";
 import Snoowrap, { Submission } from "snoowrap";
 import { baseUrl, userAgent } from "./utils/constants";
 import { commands, inviteCommand } from "./utils/commands";
 import { intents, partials, permissions, scopes } from "./utils/permissions";
 
-import { REST } from "@discordjs/rest";
 import { SubmissionStream } from "snoostorm";
 import discordEscape from "discord-escape";
 import { log } from "./utils/debug";
@@ -71,7 +69,7 @@ export class ModeratedFeedBot {
 
 		for (const target of this.config.targets) {
 			const channel = await this.client.channels.fetch(target.channel);
-			if (channel === null || !channel.isText()) {
+			if (channel === null || channel.type !== ChannelType.GuildText) {
 				if (target.key) {
 					log("failed to find text channel with id '%s' for target '%s'", target.channel, target.key);
 				} else {
@@ -106,7 +104,7 @@ export class ModeratedFeedBot {
 		log("discord client registered commands");
 	}
 
-	private async handleSubmission(channel: TextBasedChannels, submission: Submission): Promise<void> {
+	private async handleSubmission(channel: TextBasedChannel, submission: Submission): Promise<void> {
 		try {
 			// Prevent removed submissions from being handled
 			if (submission.spam || submission.removed_by_category !== null) return;
@@ -115,7 +113,7 @@ export class ModeratedFeedBot {
 			const timestamp = submission.created_utc * 1000;
 			if (timestamp < this.minimumPostTimestamp) return;
 
-			const embed = new MessageEmbed()
+			const embed = new EmbedBuilder()
 				.setTitle(submission.title.slice(0, 256))
 				.setURL(baseUrl + submission.permalink)
 				.setTimestamp(timestamp);
@@ -150,7 +148,11 @@ export class ModeratedFeedBot {
 
 				const url = baseUrl + "/u/" + submission.author.name;
 
-				embed.setAuthor(submission.author.name, iconUrl, url);
+				embed.setAuthor({
+					iconURL: iconUrl,
+					name: submission.author.name,
+					url,
+				});
 			}
 
 			await channel.send({
@@ -268,14 +270,14 @@ export class ModeratedFeedBot {
 			scopes,
 		});
 
-		const button = new MessageButton()
+		const button = new ButtonBuilder()
 			.setLabel("Invite")
-			.setStyle("LINK")
+			.setStyle(ButtonStyle.Link)
 			.setURL(invite);
 
 		await interaction.reply({
 			components: [
-				new MessageActionRow().addComponents(button),
+				new ActionRowBuilder<MessageActionRowComponentBuilder>().addComponents(button),
 			],
 			content: "Invite the bot using the following link:",
 			ephemeral: true,

@@ -1,5 +1,5 @@
 import { SnoowrapOptions } from "snoowrap";
-import { Snowflake } from "discord-api-types/v9";
+import { Snowflake } from "discord.js";
 import { configurationLog } from "./debug";
 import { cosmiconfig } from "cosmiconfig";
 import mergeDeep from "merge-deep";
