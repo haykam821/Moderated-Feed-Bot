@@ -31,10 +31,10 @@
 	"devDependencies": {
 		"@types/debug": "^4.1.7",
 		"@types/merge-deep": "^3.0.0",
-		"@typescript-eslint/eslint-plugin": "^5.9.0",
-		"@typescript-eslint/parser": "^5.9.0",
-		"eslint": "^8.21.0",
-		"eslint-config-haykam": "^1.18.0",
+		"@typescript-eslint/eslint-plugin": "^5.60.1",
+		"@typescript-eslint/parser": "^5.60.1",
+		"eslint": "^8.43.0",
+		"eslint-config-haykam": "^1.20.0",
 		"ts-node-dev": "^2.0.0",
 		"typescript": "^4.7.4"
 	},
@@ -61,8 +61,7 @@
 			"@typescript-eslint/semi": "error",
 			"no-shadow": "off",
 			"@typescript-eslint/no-shadow": "error",
-			"sort-imports": "error",
-			"jsdoc/require-param-type": "off"
+			"sort-imports": "error"
 		}
 	}
 }
