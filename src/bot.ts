@@ -217,7 +217,8 @@ export class ModeratedFeedBot {
 					submission.remove({
 						spam: removalReason.toLowerCase().includes("spam"),
 					}),
-				]);
+				// Submissions act as promises of themselves, so casting prevents an infinitely deep type
+				] as Promise<unknown>[]);
 			} catch {
 				log("failed to report or remove submission with id '%s'", submissionId);
 				return;
