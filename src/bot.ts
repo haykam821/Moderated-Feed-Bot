@@ -1,13 +1,13 @@
-import { ActionRowBuilder, ButtonBuilder, ButtonStyle, ChannelType, Client, CommandInteraction, EmbedBuilder, GuildMember, Interaction, MessageActionRowComponentBuilder, MessageReaction, REST, Routes, Snowflake, TextBasedChannel, User } from "discord.js";
-import { FeedTarget, ModeratedFeedBotConfig } from "./utils/config";
-import Snoowrap, { Submission } from "snoowrap";
-import { baseUrl, userAgent } from "./utils/constants";
-import { commands, inviteCommand } from "./utils/commands";
-import { intents, partials, permissions, scopes } from "./utils/permissions";
-
-import { SubmissionStream } from "snoostorm";
 import discordEscape from "discord-escape";
+import { ActionRowBuilder, ButtonBuilder, ButtonStyle, ChannelType, Client, CommandInteraction, EmbedBuilder, GuildMember, Interaction, MessageActionRowComponentBuilder, MessageReaction, REST, Routes, Snowflake, TextBasedChannel, User } from "discord.js";
+import { SubmissionStream } from "snoostorm";
+import Snoowrap, { Submission } from "snoowrap";
+
+import { commands, inviteCommand } from "./utils/commands";
+import { FeedTarget, ModeratedFeedBotConfig } from "./utils/config";
+import { baseUrl, userAgent } from "./utils/constants";
 import { log } from "./utils/debug";
+import { intents, partials, permissions, scopes } from "./utils/permissions";
 
 export class ModeratedFeedBot {
 	private readonly config: ModeratedFeedBotConfig;

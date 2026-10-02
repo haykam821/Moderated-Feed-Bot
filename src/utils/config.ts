@@ -1,8 +1,9 @@
-import { SnoowrapOptions } from "snoowrap";
-import { Snowflake } from "discord.js";
-import { configurationLog } from "./debug";
 import { cosmiconfig } from "cosmiconfig";
+import { Snowflake } from "discord.js";
 import mergeDeep from "merge-deep";
+import { SnoowrapOptions } from "snoowrap";
+
+import { configurationLog } from "./debug";
 
 interface ModerationOptions {
 	/**
