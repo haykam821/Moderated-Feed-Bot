@@ -23,7 +23,7 @@
 		"cosmiconfig": "^7.0.1",
 		"debug": "^4.3.2",
 		"discord-escape": "^1.0.0",
-		"discord.js": "^14.1.2",
+		"discord.js": "^14.27.0",
 		"merge-deep": "^3.0.3",
 		"snoostorm": "^1.5.2",
 		"snoowrap": "^1.23.0"

@@ -1,5 +1,5 @@
 import discordEscape from "discord-escape";
-import { ActionRowBuilder, ButtonBuilder, ButtonStyle, ChannelType, Client, CommandInteraction, EmbedBuilder, GuildMember, Interaction, MessageActionRowComponentBuilder, MessageReaction, REST, Routes, Snowflake, TextBasedChannel, User } from "discord.js";
+import { ActionRowBuilder, ButtonBuilder, ButtonStyle, ChannelType, Client, CommandInteraction, EmbedBuilder, GuildMember, Interaction, MessageActionRowComponentBuilder, MessageReaction, REST, Routes, Snowflake, TextChannel, User } from "discord.js";
 import { SubmissionStream } from "snoostorm";
 import Snoowrap, { Submission } from "snoowrap";
 
@@ -104,7 +104,7 @@ export class ModeratedFeedBot {
 		log("discord client registered commands");
 	}
 
-	private async handleSubmission(channel: TextBasedChannel, submission: Submission): Promise<void> {
+	private async handleSubmission(channel: TextChannel, submission: Submission): Promise<void> {
 		try {
 			// Prevent removed submissions from being handled
 			if (submission.spam || submission.removed_by_category !== null) return;
