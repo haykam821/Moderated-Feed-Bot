@@ -33,7 +33,7 @@ export interface ModeratedFeedBotConfig {
 	token: string;
 }
 
-const baseConfig: ModeratedFeedBotConfig = {
+const baseConfig: Partial<ModeratedFeedBotConfig> = {
 	moderation: {
 		emoji: {
 			"❌": "Removed from Discord by {USER_TAG} ({USER_ID})",
@@ -44,7 +44,6 @@ const baseConfig: ModeratedFeedBotConfig = {
 	registerCommands: false,
 	snoowrap: {},
 	targets: [],
-	token: undefined,
 };
 
 /**

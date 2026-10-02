@@ -1,5 +1,5 @@
 import discordEscape from "discord-escape";
-import { ActionRowBuilder, ButtonBuilder, ButtonStyle, ChannelType, Client, CommandInteraction, EmbedBuilder, GuildMember, Interaction, MessageActionRowComponentBuilder, MessageReaction, REST, Routes, Snowflake, TextChannel, User } from "discord.js";
+import { ActionRowBuilder, ButtonBuilder, ButtonStyle, ChannelType, Client, CommandInteraction, EmbedBuilder, GuildMember, Interaction, MessageActionRowComponentBuilder, MessageReaction, PartialMessageReaction, PartialUser, REST, Routes, Snowflake, TextChannel, User } from "discord.js";
 import { SubmissionStream } from "snoostorm";
 import Snoowrap, { Submission } from "snoowrap";
 
@@ -13,8 +13,8 @@ export class ModeratedFeedBot {
 	private readonly config: ModeratedFeedBotConfig;
 	private readonly targetsByChannel: Record<Snowflake, FeedTarget>;
 	private started = false;
-	private client: Client;
-	private snoowrap: Snoowrap;
+	private client: Client | null = null;
+	private snoowrap: Snoowrap | null = null;
 	private minimumPostTimestamp: number;
 
 	constructor(config: ModeratedFeedBotConfig) {
@@ -27,6 +27,8 @@ export class ModeratedFeedBot {
 				target,
 			];
 		}));
+
+		this.minimumPostTimestamp = Date.now();
 
 		this.onReactionAdd = this.onReactionAdd.bind(this);
 		this.onInteractionCreate = this.onInteractionCreate.bind(this);
@@ -65,7 +67,6 @@ export class ModeratedFeedBot {
 			...this.config.snoowrap,
 			userAgent,
 		});
-		this.minimumPostTimestamp = Date.now();
 
 		for (const target of this.config.targets) {
 			const channel = await this.client.channels.fetch(target.channel);
@@ -92,13 +93,28 @@ export class ModeratedFeedBot {
 		this.client.on("interactionCreate", this.onInteractionCreate);
 	}
 
+	private getDiscordClient(): Client {
+		if (this.client === null) {
+			throw new Error("Discord client not initialized");
+		}
+
+		return this.client;
+	}
+
 	private async registerCommands(): Promise<void> {
 		const rest = new REST({
 			version: "9",
 		}).setToken(this.config.token);
 
 		log("discord client registering commands");
-		await rest.put(Routes.applicationCommands(this.client.user.id), {
+
+		const client = this.getDiscordClient();
+
+		if (client.user === null) {
+			throw new Error("Discord client is not associated with a user");
+		}
+
+		await rest.put(Routes.applicationCommands(client.user.id), {
 			body: commands.map(command => command.toJSON()),
 		});
 		log("discord client registered commands");
@@ -165,7 +181,14 @@ export class ModeratedFeedBot {
 		}
 	}
 
-	private async onReactionAdd(reaction: MessageReaction, user: User): Promise<void> {
+	private async onReactionAdd(reaction: MessageReaction | PartialMessageReaction, user: User | PartialUser): Promise<void> {
+		reaction = await reaction.fetch();
+		user = await user.fetch();
+
+		await this.onFetchedReactionAdd(reaction, user);
+	}
+
+	private async onFetchedReactionAdd(reaction: MessageReaction, user: User): Promise<void> {
 		try {
 			if (reaction.partial) {
 				try {
@@ -178,6 +201,8 @@ export class ModeratedFeedBot {
 
 			// Ensure the emoji has an assigned removal reason
 			const emoji = reaction.emoji.id || reaction.emoji.name;
+			if (emoji === null) return;
+
 			const removalReason = this.config.moderation.emoji[emoji];
 			if (!removalReason) return;
 
@@ -193,7 +218,8 @@ export class ModeratedFeedBot {
 
 			// Ensure the message is in a target channel
 			const target = this.targetsByChannel[message.channelId];
-			if (!target) return;
+			if (!target || !message.guild) return;
+
 			log("received '%s' reaction in target channel for r/%s", emoji, target.subreddit);
 
 			// Ensure the member can moderate
@@ -205,6 +231,10 @@ export class ModeratedFeedBot {
 
 			const submissionId = embed.url.split("/")[6];
 			if (!submissionId) return;
+
+			if (this.snoowrap === null) {
+				throw new Error("Reddit client is not initialized");
+			}
 
 			const submission = this.snoowrap.getSubmission(submissionId);
 			if (!submission) return;
@@ -250,7 +280,7 @@ export class ModeratedFeedBot {
 		return removalReason
 			.replace(/{USER_TAG}/g, member.user.tag)
 			.replace(/{USER_ID}/g, member.user.id)
-			.replace(/{KEY}/g, target.key);
+			.replace(/{KEY}/g, target.key ?? "");
 	}
 
 	private async onInteractionCreate(interaction: Interaction): Promise<void> {
@@ -266,7 +296,9 @@ export class ModeratedFeedBot {
 	}
 
 	private async executeInviteCommand(interaction: CommandInteraction): Promise<void> {
-		const invite = this.client.generateInvite({
+		const client = this.getDiscordClient();
+
+		const invite = client.generateInvite({
 			permissions,
 			scopes,
 		});
